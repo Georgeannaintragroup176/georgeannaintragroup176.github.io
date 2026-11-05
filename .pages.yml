@@ -1,0 +1,121 @@
+media:
+  input: images
+  output: images
+
+content:
+  - name: projects
+    label: Lavori / Work
+    type: file
+    path: content/projects.json
+    format: json
+    list: true
+    fields:
+      - name: artist
+        label: Artista / Produzione
+        type: string
+        required: true
+      - name: title_it
+        label: Titolo (IT) es. "Tour europeo 2025"
+        type: string
+      - name: title_en
+        label: Title (EN)
+        type: string
+      - name: role_it
+        label: Ruolo (IT)
+        type: string
+      - name: role_en
+        label: Role (EN)
+        type: string
+      - name: year
+        label: Anno / periodo
+        type: string
+      - name: description_it
+        label: Descrizione (IT) — usa **grassetto** se serve
+        type: text
+      - name: description_en
+        label: Description (EN)
+        type: text
+      - name: cover
+        label: Foto principale
+        type: image
+      - name: gallery
+        label: Galleria foto
+        type: image
+        list: true
+      - name: video
+        label: Link video (YouTube o Vimeo)
+        type: string
+      - name: visible
+        label: Mostra sul sito
+        type: boolean
+        default: true
+
+  - name: site
+    label: Testi del sito / Site texts
+    type: file
+    path: content/site.json
+    format: json
+    fields:
+      - name: name
+        label: Nome
+        type: string
+      - name: hero
+        label: Apertura (hero)
+        type: object
+        fields:
+          - { name: role_it, label: Ruolo (IT), type: string }
+          - { name: role_en, label: Role (EN), type: string }
+          - { name: based_it, label: Dove sei (IT), type: string }
+          - { name: based_en, label: Based in (EN), type: string }
+          - { name: availability_it, label: Disponibilità (IT), type: string }
+          - { name: availability_en, label: Availability (EN), type: string }
+          - { name: intro_it, label: Frase di apertura (IT), type: text }
+          - { name: intro_en, label: Intro line (EN), type: text }
+          - { name: background, label: Foto di sfondo (opzionale), type: image }
+      - name: about
+        label: Chi sono / About
+        type: object
+        fields:
+          - { name: text_it, label: Testo (IT) — riga vuota = nuovo paragrafo, type: text }
+          - { name: text_en, label: Text (EN), type: text }
+          - { name: photo, label: Tua foto (opzionale), type: image }
+      - name: stats
+        label: Numeri in evidenza
+        type: object
+        list: true
+        fields:
+          - { name: value, label: Valore (es. 20+), type: string }
+          - { name: label_it, label: Etichetta (IT), type: string }
+          - { name: label_en, label: Label (EN), type: string }
+      - name: skills
+        label: Competenze / Skills
+        type: object
+        list: true
+        fields:
+          - { name: group_it, label: Gruppo (IT), type: string }
+          - { name: group_en, label: Group (EN), type: string }
+          - name: items
+            label: Voci
+            type: object
+            list: true
+            fields:
+              - { name: name_it, label: Nome (IT), type: string }
+              - { name: name_en, label: Name (EN), type: string }
+              - { name: level, label: Livello 0-100, type: number }
+      - name: contact
+        label: Contatti / Contact
+        type: object
+        fields:
+          - { name: text_it, label: Testo (IT), type: text }
+          - { name: text_en, label: Text (EN), type: text }
+          - { name: email, label: Email, type: string }
+          - { name: phone, label: Telefono (opzionale), type: string }
+          - { name: instagram, label: Link Instagram, type: string }
+          - { name: linkedin, label: Link LinkedIn, type: string }
+          - { name: cv, label: CV / Portfolio PDF (opzionale), type: file }
+          - { name: base_it, label: Base (IT), type: string }
+          - { name: base_en, label: Based in (EN), type: string }
+          - { name: consoles, label: Console, type: string }
+          - { name: genres_it, label: Generi (IT), type: string }
+          - { name: genres_en, label: Genres (EN), type: string }
+          - { name: agency, label: Agenzia, type: string }
