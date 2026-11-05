@@ -8,37 +8,76 @@
     "availability_it": "Disponibile per tour 2026/27",
     "availability_en": "Available for 2026/27 tours",
     "intro_it": "**20+ anni** di disegno luci e programmazione console per concerti e tour europei, dal club alla mainstage.",
-    "intro_en": "**20+ years** designing light and programming consoles for concerts and European tours, from club shows to mainstage.",
-    "background": ""
+    "intro_en": "**20+ years** designing light and programming consoles for concerts and European tours, from club shows to mainstage."
   },
   "about": {
     "text_it": "Sono un **lighting designer e programmatore** con oltre vent'anni di esperienza nel mondo del live. Lavoro principalmente su **concerti e tour europei**, con una forte specializzazione nell'ambiente metal e rock.\n\nIl mio lavoro copre l'intero processo: dalla **pre-visualizzazione 3D** e programmazione in studio, all'**integrazione timecode** per show sincronizzati, fino alla programmazione console in tour su **grandMA2 e grandMA3**.\n\nHo lavorato con artisti come Hypocrisy, Lacuna Coil, The Pineapple Thief e Pain, seguendo produzioni in giro per l'Europa.",
     "text_en": "I'm a **lighting designer and programmer** with over twenty years of experience in live production. I work mainly on **concerts and European tours**, with a strong focus on the metal and rock scene.\n\nMy work covers the full process: from **3D pre-visualization** and studio programming, to **timecode integration** for synced shows, through to on-tour console programming on **grandMA2 and grandMA3**.\n\nI have worked with artists including Hypocrisy, Lacuna Coil, The Pineapple Thief and Pain, following productions across Europe.",
-    "photo": ""
+    "photo": "images/Hypo_bw.jpg"
   },
   "stats": [
-    { "value": "20+", "label_it": "Anni di esperienza nel live", "label_en": "Years in live production" },
-    { "value": "EU", "label_it": "Tour in giro per l'Europa", "label_en": "Tours across Europe" },
-    { "value": "MA2/3", "label_it": "Console grandMA2 e grandMA3", "label_en": "grandMA2 and grandMA3 consoles" },
-    { "value": "3D", "label_it": "Previz e programmazione offline", "label_en": "Previz and offline programming" }
+    {
+      "value": "20+",
+      "label_it": "Anni di esperienza nel live",
+      "label_en": "Years in live production"
+    },
+    {
+      "value": "EU",
+      "label_it": "Tour in giro per l'Europa",
+      "label_en": "Tours across Europe"
+    },
+    {
+      "value": "MA2/3",
+      "label_it": "Console grandMA2 e grandMA3",
+      "label_en": "grandMA2 and grandMA3 consoles"
+    },
+    {
+      "value": "3D",
+      "label_it": "Previz e programmazione offline",
+      "label_en": "Previz and offline programming"
+    }
   ],
   "skills": [
     {
       "group_it": "Console e programmazione",
       "group_en": "Consoles and programming",
       "items": [
-        { "name_it": "grandMA2", "name_en": "grandMA2", "level": 95 },
-        { "name_it": "grandMA3", "name_en": "grandMA3", "level": 90 },
-        { "name_it": "Integrazione timecode / LTC", "name_en": "Timecode / LTC integration", "level": 88 }
+        {
+          "name_it": "grandMA2",
+          "name_en": "grandMA2",
+          "level": 95
+        },
+        {
+          "name_it": "grandMA3",
+          "name_en": "grandMA3",
+          "level": 90
+        },
+        {
+          "name_it": "Integrazione timecode / LTC",
+          "name_en": "Timecode / LTC integration",
+          "level": 88
+        }
       ]
     },
     {
       "group_it": "Previz e design",
       "group_en": "Previz and design",
       "items": [
-        { "name_it": "Pre-visualizzazione 3D", "name_en": "3D pre-visualization", "level": 92 },
-        { "name_it": "Rig plot e disegno tecnico", "name_en": "Rig plots and technical drawing", "level": 85 },
-        { "name_it": "Programmazione in tour", "name_en": "On-tour programming", "level": 93 }
+        {
+          "name_it": "Pre-visualizzazione 3D",
+          "name_en": "3D pre-visualization",
+          "level": 92
+        },
+        {
+          "name_it": "Rig plot e disegno tecnico",
+          "name_en": "Rig plots and technical drawing",
+          "level": 85
+        },
+        {
+          "name_it": "Programmazione in tour",
+          "name_en": "On-tour programming",
+          "level": 93
+        }
       ]
     }
   ],
@@ -46,10 +85,6 @@
     "text_it": "Disponibile per tour, produzioni singole e collaborazioni. Scrivimi per date, rider tecnico o per parlare di un progetto.",
     "text_en": "Available for tours, one-off shows and collaborations. Get in touch for dates, tech riders, or to talk through a project.",
     "email": "info@stefanodicarlo.com",
-    "phone": "",
-    "instagram": "",
-    "linkedin": "",
-    "cv": "",
     "base_it": "Italia",
     "base_en": "Italy",
     "consoles": "grandMA2 / grandMA3",
