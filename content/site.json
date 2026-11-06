@@ -56,6 +56,16 @@
           "name_it": "Integrazione timecode / LTC",
           "name_en": "Timecode / LTC integration",
           "level": 88
+        },
+        {
+          "name_it": "Unreal Engine 5 - Blender",
+          "name_en": "Unnreal Engine 5 - Blender",
+          "level": 90
+        },
+        {
+          "name_it": "DaVinci Resolve Studio",
+          "name_en": "DaVinci Resolve Studio",
+          "level": 88
         }
       ]
     },
