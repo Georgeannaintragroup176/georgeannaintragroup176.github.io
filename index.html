@@ -1,503 +1,753 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stefano Di Carlo — Lighting Designer</title>
-<meta name="description" content="Stefano Di Carlo — Lighting designer e programmatore. Concerti e tour europei, grandMA2/MA3, previz 3D, timecode.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230a0a0c'/%3E%3Cpath d='M32 10 L14 56 H50 Z' fill='%23ff8c1a' opacity='.9'/%3E%3Ccircle cx='32' cy='12' r='5' fill='%23e9e7e2'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0a0a0c;
-    --bg-raised:#131317;
-    --bg-raised-2:#1b1b20;
-    --text:#e9e7e2;
-    --text-dim:#8d8b91;
-    --text-faint:#55535a;
-    --amber:#ff8c1a;
-    --cyan:#00d9ff;
-    --magenta:#ff2f9e;
-    --line:#28282e;
-    --font-display:'Oswald', sans-serif;
-    --font-body:'Inter', sans-serif;
-    --font-mono:'JetBrains Mono', monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
-  }
-  body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;overflow-x:hidden;}
-  a{color:inherit;}
-  img{display:block;max-width:100%;}
-  ::selection{background:var(--amber);color:#0a0a0c;}
-  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
-  @media (max-width:520px){.wrap{padding:0 16px;}}
-
-  /* HEADER */
-  header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,12,0.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
-  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 28px;max-width:1120px;margin:0 auto;}
-  @media (max-width:520px){.nav{padding:14px 16px;}}
-  .nav-name{font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap;}
-  .nav-name span{color:var(--amber);}
-  .nav-links{display:flex;gap:30px;list-style:none;align-items:center;}
-  .nav-links a{font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:var(--text-dim);transition:color .2s ease;}
-  .nav-links a:hover{color:var(--cyan);}
-  .lang-toggle{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;flex-shrink:0;}
-  .lang-toggle button{background:none;border:none;color:var(--text-faint);padding:6px 10px;cursor:pointer;font-family:var(--font-mono);font-size:11px;letter-spacing:0.05em;}
-  .lang-toggle button.active{background:var(--amber);color:#0a0a0c;font-weight:500;}
-  @media (max-width:760px){.nav-links{display:none;}}
-
-  /* HERO */
-  .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:110px 0 90px;overflow:hidden;border-top:none;}
-  .hero-photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease;z-index:0;}
-  .hero-photo.on{opacity:0.35;}
-  .hero-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,12,0.4), var(--bg) 95%);}
-  .hero-beams{position:absolute;inset:0;z-index:0;pointer-events:none;}
-  .beam{position:absolute;top:-10%;width:38vw;height:140vh;transform-origin:top center;filter:blur(6px);opacity:0.16;mix-blend-mode:screen;animation:sweep 14s ease-in-out infinite;}
-  .beam.b1{left:8%;background:linear-gradient(180deg, var(--cyan), transparent 70%);--r:-18deg;}
-  .beam.b2{left:38%;background:linear-gradient(180deg, var(--amber), transparent 70%);--r:6deg;animation-delay:-4s;}
-  .beam.b3{left:62%;background:linear-gradient(180deg, var(--magenta), transparent 70%);--r:20deg;animation-delay:-9s;}
-  @keyframes sweep{0%,100%{transform:rotate(var(--r));}50%{transform:rotate(calc(var(--r) + 8deg));}}
-  .haze{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255,140,26,0.08), transparent 60%);z-index:1;pointer-events:none;}
-  .hero-inner{position:relative;z-index:2;width:100%;}
-  .hero-meta{font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:22px;display:flex;gap:10px 18px;flex-wrap:wrap;color:var(--text-dim);}
-  .hero-meta .dot{color:var(--amber);}
-  h1.hero-title{font-family:var(--font-display);font-weight:700;font-size:clamp(48px, 10vw, 112px);line-height:0.98;text-transform:uppercase;letter-spacing:-0.01em;}
-  h1.hero-title .last{color:transparent;-webkit-text-stroke:1px var(--text-dim);}
-  .hero-sub{margin-top:26px;font-size:18px;color:var(--text-dim);max-width:560px;}
-  .hero-sub strong{color:var(--text);font-weight:500;}
-  .hero-cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;}
-  .btn{font-family:var(--font-mono);font-size:13px;letter-spacing:0.05em;text-transform:uppercase;padding:14px 26px;text-decoration:none;border-radius:3px;display:inline-flex;align-items:center;gap:10px;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease, color .15s ease;}
-  .btn-primary{background:var(--amber);color:#0a0a0c;font-weight:600;}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,140,26,0.25);}
-  .btn-ghost{border:1px solid var(--line);color:var(--text);}
-  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
-
-  /* SECTIONS */
-  section{padding:110px 0;border-top:1px solid var(--line);position:relative;}
-  @media (max-width:520px){section{padding:80px 0;}}
-  .section-head{display:flex;align-items:baseline;gap:18px;margin-bottom:52px;}
-  .section-num{font-family:var(--font-mono);color:var(--amber);font-size:13px;letter-spacing:0.1em;white-space:nowrap;}
-  .section-title{font-family:var(--font-display);font-size:clamp(28px,4vw,42px);text-transform:uppercase;letter-spacing:0.01em;font-weight:600;}
-  .section-line{flex:1;height:1px;background:var(--line);}
-
-  /* ABOUT */
-  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:64px;}
-  @media (max-width:800px){.about-grid{grid-template-columns:1fr;gap:44px;}}
-  .about-text p{color:var(--text-dim);font-size:17px;margin-bottom:20px;max-width:56ch;}
-  .about-text strong{color:var(--text);font-weight:500;}
-  .about-photo{margin-bottom:28px;border-radius:4px;overflow:hidden;border:1px solid var(--line);aspect-ratio:3/4;max-width:420px;}
-  .about-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(0.2) contrast(1.05);}
-  .stat-list{border-top:1px solid var(--line);}
-  .stat-item{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);}
-  .stat-num{font-family:var(--font-display);font-size:34px;color:var(--amber);}
-  .stat-label{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;text-align:right;max-width:220px;}
-
-  /* WORK — cue list */
-  .cue-item{border-bottom:1px solid var(--line);}
-  .cue-head{width:100%;display:grid;grid-template-columns:64px 1fr auto 28px;gap:20px;align-items:center;padding:26px 8px;background:none;border:none;color:inherit;text-align:left;cursor:pointer;font:inherit;transition:background .2s ease;}
-  .cue-head:hover,.cue-item.open .cue-head{background:var(--bg-raised);}
-  .cue-head:hover .cue-name,.cue-item.open .cue-name{color:var(--amber);}
-  .cue-tag{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);letter-spacing:0.05em;}
-  .cue-name{font-family:var(--font-display);font-size:24px;text-transform:uppercase;letter-spacing:0.01em;transition:color .2s ease;line-height:1.2;}
-  .cue-desc{font-size:14px;color:var(--text-dim);margin-top:4px;}
-  .cue-year{font-family:var(--font-mono);font-size:13px;color:var(--text-dim);white-space:nowrap;}
-  .cue-arrow{font-family:var(--font-mono);color:var(--text-faint);transition:transform .25s ease, color .25s ease;justify-self:end;}
-  .cue-item.open .cue-arrow{transform:rotate(45deg);color:var(--amber);}
-  @media (max-width:600px){
-    .cue-head{grid-template-columns:44px 1fr 22px;gap:14px;padding:22px 4px;}
-    .cue-year{display:none;}
-    .cue-name{font-size:20px;}
-  }
-  .cue-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s ease;}
-  .cue-item.open .cue-panel{grid-template-rows:1fr;}
-  .cue-panel-inner{overflow:hidden;}
-  .cue-content{padding:8px 8px 36px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:start;}
-  @media (max-width:800px){.cue-content{grid-template-columns:1fr;gap:22px;padding:8px 4px 30px;}}
-  .cue-media{display:flex;flex-direction:column;gap:12px;}
-  .media-frame{position:relative;aspect-ratio:16/9;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:var(--bg-raised);}
-  .media-frame img,.media-frame iframe{width:100%;height:100%;object-fit:cover;border:0;}
-  .placeholder{position:absolute;inset:0;display:flex;align-items:flex-end;padding:16px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint);
-    background:
-      radial-gradient(ellipse 30% 90% at 30% 0%, rgba(0,217,255,0.18), transparent 70%),
-      radial-gradient(ellipse 30% 90% at 55% 0%, rgba(255,140,26,0.2), transparent 70%),
-      radial-gradient(ellipse 30% 90% at 78% 0%, rgba(255,47,158,0.16), transparent 70%),
-      var(--bg-raised);}
-  .thumbs{display:grid;grid-template-columns:repeat(auto-fill, minmax(88px,1fr));gap:8px;}
-  .thumbs button{aspect-ratio:1;border:1px solid var(--line);border-radius:3px;overflow:hidden;padding:0;background:var(--bg-raised);cursor:zoom-in;}
-  .thumbs img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease, opacity .3s ease;opacity:0.85;}
-  .thumbs button:hover img{transform:scale(1.06);opacity:1;}
-  .cue-info p{color:var(--text-dim);font-size:15px;margin-bottom:14px;}
-  .cue-info strong{color:var(--text);font-weight:500;}
-  .cue-info dl{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-family:var(--font-mono);font-size:12px;margin-top:6px;}
-  .cue-info dt{color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;}
-  .cue-info dd{color:var(--text);}
-  .work-note{margin-top:28px;font-family:var(--font-mono);font-size:12px;color:var(--text-faint);}
-
-  /* LIGHTBOX */
-  .lightbox{position:fixed;inset:0;z-index:200;background:rgba(5,5,7,0.94);display:none;align-items:center;justify-content:center;padding:24px;}
-  .lightbox.on{display:flex;}
-  .lightbox img{max-width:100%;max-height:86vh;border-radius:3px;}
-  .lb-btn{position:absolute;background:none;border:1px solid var(--line);color:var(--text);font-family:var(--font-mono);font-size:13px;padding:10px 14px;border-radius:3px;cursor:pointer;}
-  .lb-btn:hover{border-color:var(--amber);color:var(--amber);}
-  .lb-close{top:18px;right:18px;}
-  .lb-prev{left:18px;top:50%;transform:translateY(-50%);}
-  .lb-next{right:18px;top:50%;transform:translateY(-50%);}
-  .lb-count{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:12px;color:var(--text-dim);}
-
-  /* SKILLS — faders */
-  .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:48px 64px;}
-  @media (max-width:760px){.skills-grid{grid-template-columns:1fr;}}
-  .skill-group h3{font-family:var(--font-mono);font-size:12px;font-weight:400;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-faint);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--line);}
-  .fader{margin-bottom:18px;}
-  .fader-top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;}
-  .fader-val{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);}
-  .fader-track{height:6px;background:var(--bg-raised-2);border-radius:3px;overflow:hidden;}
-  .fader-fill{height:100%;border-radius:3px;background:linear-gradient(90deg, var(--cyan), var(--amber));width:0%;transition:width 1.2s cubic-bezier(.16,.84,.44,1);}
-
-  /* CONTACT */
-  .contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
-  @media (max-width:800px){.contact-inner{grid-template-columns:1fr;gap:40px;}}
-  .contact-text p{color:var(--text-dim);font-size:17px;max-width:46ch;margin-bottom:24px;}
-  .contact-email{font-family:var(--font-display);font-size:clamp(22px,3vw,34px);text-transform:uppercase;color:var(--amber);text-decoration:none;display:inline-block;border-bottom:2px solid var(--amber);padding-bottom:4px;word-break:break-all;}
-  .contact-links{margin-top:30px;display:flex;flex-direction:column;gap:10px;font-family:var(--font-mono);font-size:13px;}
-  .contact-links a{text-decoration:none;color:var(--text-dim);}
-  .contact-links a:hover{color:var(--cyan);}
-  .contact-card{background:var(--bg-raised);border:1px solid var(--line);border-radius:6px;padding:30px;}
-  .contact-card .cue-tag{margin-bottom:14px;display:block;}
-  .contact-card dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-family:var(--font-mono);font-size:13px;}
-  .contact-card dt{color:var(--text-faint);text-transform:uppercase;letter-spacing:0.05em;}
-
-  footer{padding:36px 0;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:12px;color:var(--text-faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
-  .reveal.in{opacity:1;transform:none;}
-  .load-error{padding:16px;border:1px solid var(--magenta);color:var(--text);font-family:var(--font-mono);font-size:12px;border-radius:4px;}
-</style>
+<title>M365 - Manage Microsoft 365 Easily and Safely | Download</title>
+<meta name="description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Manage Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant resources with Microsoft Graph and modern modules, read-only by default, with -WhatIf on every change and full comment-based help.">
+<meta name="keywords" content="conditional-access, endpoint-management, entra-id, entra-id-governance, exchange-online, intune, microsoft-azure, microsoft-defender, microsoft-defender-for-cloud, microsoft-defender-for-endpoint, microsoft-defender-for-office-365, microsoft-defender-xdr, microsoft-graph, microsoft-intune, microsoft-purview, microsoft-sentinel, microsoft-teams, security, sharepoint-online, windows-autopilot">
+<meta name="author" content="M365">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta property="og:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta property="og:description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management with Microsoft Graph and modern modules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta name="twitter:description" content="Download M365 PowerShell scripts for Microsoft 365 administration with a safety-first, read-only default and -WhatIf support.">
 </head>
-<body>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;">
+<div style="max-width:1100px; margin:0 auto; padding:24px 18px 64px; box-sizing:border-box;">
 
-<header>
-  <nav class="nav">
-    <a href="#top" class="nav-name" id="navName">Stefano <span>Di Carlo</span></a>
-    <ul class="nav-links">
-      <li><a href="#about" data-ui="nav.about"></a></li>
-      <li><a href="#work" data-ui="nav.work"></a></li>
-      <li><a href="#skills" data-ui="nav.skills"></a></li>
-      <li><a href="#contact" data-ui="nav.contact"></a></li>
-    </ul>
-    <div class="lang-toggle" role="group" aria-label="Language">
-      <button type="button" data-lang="it">IT</button>
-      <button type="button" data-lang="en">EN</button>
-    </div>
-  </nav>
+<header style="background:#ffffff; border:1px solid #e5e7eb; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.08); padding:36px 28px; margin-bottom:28px;">
+<h1 style="font-size:clamp(2rem,4.2vw,3.2rem); line-height:1.12; margin:0 0 18px; color:#0f172a; letter-spacing:-0.035em;">🛡️ M365 - Manage Microsoft 365 Easily and Safely</h1>
+<p style="font-size:1.15rem; margin:0 0 16px; color:#334155;">M365 is a collection of PowerShell scripts for Microsoft 365 administration. It supports Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management. It uses Microsoft Graph and modern modules only. It is read-only by default. Every change includes -WhatIf. Full comment-based help is included.</p>
+<p style="font-size:1.05rem; margin:0 0 24px; color:#475569;">This page is written for anyone who wants a simple way to download and run M365 on Windows. You do not need programming knowledge to get started. The main download page keeps the release files in one place, and the scripts are designed around clear help text and safe defaults.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" style="display:inline-block; background:linear-gradient(135deg,#ff6a00,#ee0979); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(238,9,121,0.22); margin:0 0 16px;">⬇️ Download M365 from GitHub Releases</a>
+<p style="margin:0; font-size:1rem; font-weight:700; color:#0f172a;">Visit this link to download the application.</p>
 </header>
 
-<main id="top">
-  <section class="hero">
-    <div class="hero-photo" id="heroPhoto"></div>
-    <div class="hero-beams" aria-hidden="true"><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div></div>
-    <div class="haze"></div>
-    <div class="hero-inner wrap">
-      <div class="hero-meta" id="heroMeta"></div>
-      <h1 class="hero-title" id="heroTitle">Stefano<br>Di <span class="last">Carlo</span></h1>
-      <p class="hero-sub" id="heroIntro"></p>
-      <div class="hero-cta">
-        <a href="#work" class="btn btn-primary" data-ui="hero.cta1"></a>
-        <a href="#contact" class="btn btn-ghost" data-ui="hero.cta2"></a>
-      </div>
-    </div>
-  </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🚀 What Is M365?</h2>
+<p style="margin:0 0 14px;">M365 is a set of ready-made administrator scripts for Microsoft 365. Instead of clicking through many separate portals, you can use organized scripts to review and manage common areas of a Microsoft 365 tenant. The scripts focus on Microsoft Graph and modern modules, helping keep the toolset current and consistent.</p>
+<p style="margin:0 0 14px;">The project covers day-to-day administration and security work across Intune, Entra ID, Entra ID Governance, Defender, Exchange Online, Purview, Teams, SharePoint Online, Microsoft Sentinel, Microsoft Azure, and Windows Autopilot. It is built for people who want practical Microsoft 365 controls without assembling a custom toolkit from scratch.</p>
+<p style="margin:0;">Safety is part of the design. The scripts are read-only by default, and every change includes -WhatIf support. Full comment-based help is built into the scripts so you can read what a script does before you use it. That makes M365 useful for learning, checking your environment, and preparing controlled changes.</p>
+</section>
 
-  <section id="about">
-    <div class="wrap">
-      <div class="section-head"><span class="section-num">CUE 01</span><h2 class="section-title" data-ui="about.title"></h2><span class="section-line"></span></div>
-      <div class="about-grid">
-        <div class="about-text reveal" id="aboutText"></div>
-        <div class="reveal">
-          <div id="aboutPhoto"></div>
-          <div class="stat-list" id="stats"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">✨ What You Can Do with M365</h2>
+<p style="margin:0 0 14px;">M365 groups scripts around the parts of Microsoft 365 that administrators use most. You can explore user access, device management, security posture, messaging settings, compliance content, collaboration settings, and tenant-wide configuration. The goal is to give you clear, repeatable actions for common tasks.</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">Review conditional access and identity governance settings in Entra ID.</li>
+<li style="margin:0 0 10px;">Inspect Intune device compliance, endpoint management, and Windows Autopilot details.</li>
+<li style="margin:0 0 10px;">Check Microsoft Defender alerts, policies, and security recommendations across Defender products.</li>
+<li style="margin:0 0 10px;">Audit Exchange Online mailbox, transport, and recipient configuration.</li>
+<li style="margin:0 0 10px;">Explore Purview compliance and data protection areas.</li>
+<li style="margin:0 0 10px;">Review Teams and SharePoint Online collaboration settings.</li>
+<li style="margin:0 0 10px;">Inspect tenant-wide Microsoft 365 and Azure administration information.</li>
+<li style="margin:0;">Use Microsoft Graph and modern modules for consistent access to Microsoft 365 services.</li>
+</ul>
+</section>
 
-  <section id="work">
-    <div class="wrap">
-      <div class="section-head"><span class="section-num">CUE 02</span><h2 class="section-title" data-ui="work.title"></h2><span class="section-line"></span></div>
-      <div class="cue-list" id="projects"></div>
-    </div>
-  </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🔒 Safety-First Script Design</h2>
+<p style="margin:0 0 14px;">M365 is designed for controlled administration. Read-only behavior is the default, which means you can examine settings without intending to make changes. When a script supports a change, -WhatIf is available so you can see what would happen before any action is taken.</p>
+<p style="margin:0 0 14px;">Every script includes full comment-based help. That help explains what the script does, what information it works with, and how to use the available options. You can read the help before running anything, which is especially useful if you are new to Microsoft 365 administration or want to confirm the exact scope of a task.</p>
+<p style="margin:0;">This approach makes M365 suitable for learning, auditing, preparing change windows, and reviewing tenant configuration. You can start with read-only checks, build familiarity with the scripts, and then use -WhatIf to preview controlled changes when you are ready.</p>
+</section>
 
-  <section id="skills">
-    <div class="wrap">
-      <div class="section-head"><span class="section-num">CUE 03</span><h2 class="section-title" data-ui="skills.title"></h2><span class="section-line"></span></div>
-      <div class="skills-grid" id="skillsGrid"></div>
-    </div>
-  </section>
+<section id="download" style="background:#0f172a; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.18); padding:34<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 - Manage Microsoft 365 Easily and Safely | Download</title>
+<meta name="description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Manage Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant resources with Microsoft Graph and modern modules, read-only by default, with -WhatIf on every change and full comment-based help.">
+<meta name="keywords" content="conditional-access, endpoint-management, entra-id, entra-id-governance, exchange-online, intune, microsoft-azure, microsoft-defender, microsoft-defender-for-cloud, microsoft-defender-for-endpoint, microsoft-defender-for-office-365, microsoft-defender-xdr, microsoft-graph, microsoft-intune, microsoft-purview, microsoft-sentinel, microsoft-teams, security, sharepoint-online, windows-autopilot">
+<meta name="author" content="M365">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta property="og:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta property="og:description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management with Microsoft Graph and modern modules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta name="twitter:description" content="Download M365 PowerShell scripts for Microsoft 365 administration with a safety-first, read-only default and -WhatIf support.">
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;">
+<div style="max-width:1100px; margin:0 auto; padding:24px 18px 64px; box-sizing:border-box;">
 
-  <section id="contact">
-    <div class="wrap">
-      <div class="section-head"><span class="section-num">CUE 04</span><h2 class="section-title" data-ui="contact.title"></h2><span class="section-line"></span></div>
-      <div class="contact-inner">
-        <div class="contact-text reveal" id="contactText"></div>
-        <div class="contact-card reveal" id="contactCard"></div>
-      </div>
-    </div>
-  </section>
-</main>
+<header style="background:#ffffff; border:1px solid #e5e7eb; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.08); padding:36px 28px; margin-bottom:28px;">
+<h1 style="font-size:clamp(2rem,4.2vw,3.2rem); line-height:1.12; margin:0 0 18px; color:#0f172a; letter-spacing:-0.035em;">🛡️ M365 - Manage Microsoft 365 Easily and Safely</h1>
+<p style="font-size:1.15rem; margin:0 0 16px; color:#334155;">M365 is a collection of PowerShell scripts for Microsoft 365 administration. It supports Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management. It uses Microsoft Graph and modern modules only. It is read-only by default. Every change includes -WhatIf. Full comment-based help is included.</p>
+<p style="font-size:1.05rem; margin:0 0 24px; color:#475569;">This page is written for anyone who wants a simple way to download and use M365 on Windows. You do not need programming knowledge to get started. The main download page keeps the release files in one place, and the scripts are designed around clear help text and safe defaults.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#ff6a00,#ee0979); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(238,9,121,0.22); margin:0 0 16px;">⬇️ Download M365 from GitHub Releases</a>
+<p style="margin:0; font-size:1rem; font-weight:700; color:#0f172a;">Visit this link to download the application.</p>
+</header>
 
-<footer class="wrap">
-  <span>© <span id="year"></span> <span id="footName">Stefano Di Carlo</span></span>
-  <span data-ui="footer.tag"></span>
-</footer>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🚀 What Is M365?</h2>
+<p style="margin:0 0 14px;">M365 is a set of ready-made administrator scripts for Microsoft 365. Instead of clicking through many separate portals, you can use organized scripts to review and manage common areas of a Microsoft 365 tenant. The scripts focus on Microsoft Graph and modern modules, helping keep the toolset current and consistent.</p>
+<p style="margin:0 0 14px;">The project covers day-to-day administration and security work across Intune, Entra ID, Entra ID Governance, Defender, Exchange Online, Purview, Teams, SharePoint Online, Microsoft Sentinel, Microsoft Azure, and Windows Autopilot. It is built for people who want practical Microsoft 365 controls without assembling a custom toolkit from scratch.</p>
+<p style="margin:0;">Safety is part of the design. The scripts are read-only by default, and every change includes -WhatIf support. Full comment-based help is built into the scripts so you can read what a script does before you use it. That makes M365 useful for learning, checking your environment, and preparing controlled changes.</p>
+</section>
 
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto">
-  <img id="lbImg" alt="">
-  <button class="lb-btn lb-close" id="lbClose" aria-label="Chiudi">✕</button>
-  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Precedente">←</button>
-  <button class="lb-btn lb-next" id="lbNext" aria-label="Successiva">→</button>
-  <div class="lb-count" id="lbCount"></div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">✨ What You Can Do with M365</h2>
+<p style="margin:0 0 14px;">M365 groups scripts around the parts of Microsoft 365 that administrators use most. You can explore user access, device management, security posture, messaging settings, compliance content, collaboration settings, and tenant-wide configuration. The goal is to give you clear, repeatable actions for common tasks.</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">Review conditional access and identity governance settings in Entra ID.</li>
+<li style="margin:0 0 10px;">Inspect Intune device compliance, endpoint management, and Windows Autopilot details.</li>
+<li style="margin:0 0 10px;">Check Microsoft Defender alerts, policies, and security recommendations across Defender products.</li>
+<li style="margin:0 0 10px;">Audit Exchange Online mailbox, transport, and recipient configuration.</li>
+<li style="margin:0 0 10px;">Explore Purview compliance and data protection areas.</li>
+<li style="margin:0 0 10px;">Review Teams and SharePoint Online collaboration settings.</li>
+<li style="margin:0 0 10px;">Inspect tenant-wide Microsoft 365 and Azure administration information.</li>
+<li style="margin:0;">Use Microsoft Graph and modern modules for consistent access to Microsoft 365 services.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🔒 Safety-First Script Design</h2>
+<p style="margin:0 0 14px;">M365 is designed for controlled administration. Read-only behavior is the default, which means you can examine settings without intending to make changes. When a script supports a change, -WhatIf is available so you can see what would happen before any action is taken.</p>
+<p style="margin:0 0 14px;">Every script includes full comment-based help. That help explains what the script does, what information it works with, and how to use the available options. You can read the help before running anything, which is especially useful if you are new to Microsoft 365 administration or want to confirm the exact scope of a task.</p>
+<p style="margin:0;">This approach makes M365 suitable for learning, auditing, preparing change windows, and reviewing tenant configuration. You can start with read-only checks, build familiarity with the scripts, and then use -WhatIf to preview controlled changes when you are ready.</p>
+</section>
+
+<section id="download" style="background:#0f172a; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.18); padding:34px 28px; margin-bottom:24px; color:#e2e8f0;">
+<h2 style="font-size:1.75rem; line-height:1.25; margin:0 0 14px; color:#ffffff;">⬇️ Download M365</h2>
+<p style="margin:0 0 14px; color:#cbd5e1;">The main download page is hosted on GitHub Releases. Use the button below to open the page and get the M365 files.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#00c6ff,#0072ff); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(0,114,255,0.32); margin:0 0 18px;">⬇️ Open the M365 Download Page</a>
+<p style="margin:0 0 14px; font-size:1rem; font-weight:700; color:#ffffff;">Visit this link to download the application.</p>
+<p style="margin:0; color:#cbd5e1;">Keep the downloaded files in a folder you can find later. Use the included help text as your guide when you are ready to explore M365.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧭 Getting Started on Windows</h2>
+<p style="margin:0 0 14px;">Getting started is simple. M365 is made for Windows users who want practical Microsoft 365 administration scripts with clear guidance. Follow the steps below in order.</p>
+<ol style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 12px;"><strong>Open the download link.</strong> Use the main button on this page to go to the M365 release page.</li>
+<li style="margin:0 0 12px;"><strong>Download the M365 files.</strong> Save them to a folder you can easily find, such as your Downloads folder or a dedicated M365 folder.</li>
+<li style="margin:0 0 12px;"><strong>Read the help first.</strong> Each script includes full comment-based help. Read the help for the area you want to inspect before making any changes.</li>
+<li style="margin:0 0 12px;"><strong>Start in read-only mode.</strong> Use the default read-only behavior to review settings and understand what is in your tenant.</li>
+<li style="margin:0;"><strong>Preview changes with -WhatIf.</strong> When you are ready to look at a change, use -WhatIf to see what the script would do before anything is applied.</li>
+</ol>
+<p style="margin:14px 0 0;">You do not need to write your own scripts. The value of M365 is that the scripts are already organized by Microsoft 365 area, with safety controls and help text included.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🖥️ Before You Begin</h2>
+<p style="margin:0 0 14px;">M365 is intended for use on Windows. A typical setup includes the following:</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">A Windows 10 or Windows 11 computer.</li>
+<li style="margin:0 0 10px;">A stable internet connection for downloading the files and working with Microsoft 365 services.</li>
+<li style="margin:0 0 10px;">A Microsoft 365 account that can sign in to the areas you want to review.</li>
+<li style="margin:0 0 10px;">Permissions that match the work you want to do. Read-only review needs only the access required to view those settings.</li>
+<li style="margin:0;">Familiarity with using files and folders on Windows. You do not need deep scripting knowledge to read the help text.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">📘 How to Use M365 Safely</h2>
+<p style="margin:0 0 14px;">The safest way to use M365 is to begin with review tasks. Read the comment-based help for the script you want to use, confirm what it targets, and run it in its default read-only mode. This helps you understand the output before you consider any change.</p>
+<p style="margin:0 0 14px;">When a script includes change operations, use <span style="font-family:Consolas,Monaco,monospace; background:#f1f5f9; padding:2px 6px; border-radius:6px;">-WhatIf</span> first. This shows what the script would do without carrying out the change. Review the output carefully. If anything looks unexpected, stop and review the script help again.</p>
+<p style="margin:0;">Keep your work organized by area. For example, review Entra ID and conditional access settings in one session, then Intune endpoint management in another. This makes it easier to follow the output and keep clear notes about what you find.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧩 Main Areas Covered</h2>
+<p style="margin:0 0 14px;">M365 covers the core Microsoft 365 administration and security areas listed in the project description. Each area is supported by scripts that use Microsoft Graph and modern modules only.</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-top:16px;">
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Identity and Access</h3>
+<p style="margin:0; color:#475569;">Entra ID, Entra ID Governance, conditional access, and tenant-wide identity review.</p>
 </div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Endpoint Management</h3>
+<p style="margin:0; color:#475569;">Intune device management, endpoint configuration, and Windows Autopilot details.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Security</h3>
+<p style="margin:0; color:#475569;">Microsoft Defender for Cloud, Defender for Endpoint, Defender for Office 365, Defender XDR, and Microsoft Sentinel review areas.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Messaging and Collaboration</h<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 - Manage Microsoft 365 Easily and Safely | Download</title>
+<meta name="description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Manage Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant resources with Microsoft Graph and modern modules. Read-only by default, -WhatIf on every change, and full comment-based help.">
+<meta name="keywords" content="conditional-access, endpoint-management, entra-id, entra-id-governance, exchange-online, intune, microsoft-azure, microsoft-defender, microsoft-defender-for-cloud, microsoft-defender-for-endpoint, microsoft-defender-for-office-365, microsoft-defender-xdr, microsoft-graph, microsoft-intune, microsoft-purview, microsoft-sentinel, microsoft-teams, security, sharepoint-online, windows-autopilot">
+<meta name="author" content="M365">
+<meta name="robots" content="index, follow">
+<meta name="content-format" content="HTML only. Markdown is forbidden.">
+<link rel="canonical" href="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta property="og:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta property="og:description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management with Microsoft Graph and modern modules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta name="twitter:description" content="Download M365 PowerShell scripts for Microsoft 365 administration with a safety-first, read-only default and -WhatIf support.">
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;">
+<main style="max-width:1100px; margin:0 auto; padding:24px 18px 64px; box-sizing:border-box;">
 
-<script>
-(function(){
-  // Etichette fisse dell'interfaccia (i contenuti veri stanno in content/*.json)
-  var UI = {
-    'nav.about':{it:'Chi sono',en:'About'},
-    'nav.work':{it:'Lavori',en:'Work'},
-    'nav.skills':{it:'Competenze',en:'Skills'},
-    'nav.contact':{it:'Contatti',en:'Contact'},
-    'hero.cta1':{it:'Guarda i lavori',en:'See the work'},
-    'hero.cta2':{it:'Scrivimi',en:'Get in touch'},
-    'about.title':{it:'Chi sono',en:'About'},
-    'work.title':{it:'Lavori selezionati',en:'Selected work'},
-    'work.soon':{it:'Foto e video in arrivo',en:'Photos and video coming soon'},
-    'work.role':{it:'Ruolo',en:'Role'},
-    'work.year':{it:'Anno',en:'Year'},
-    'work.video':{it:'Video',en:'Video'},
-    'skills.title':{it:'Competenze tecniche',en:'Technical skills'},
-    'contact.title':{it:'Contatti',en:'Contact'},
-    'contact.card':{it:'Scheda tecnica',en:'Tech spec'},
-    'contact.base':{it:'Base',en:'Based in'},
-    'contact.consoles':{it:'Console',en:'Consoles'},
-    'contact.genres':{it:'Generi',en:'Genres'},
-    'contact.agency':{it:'Agenzia',en:'Agency'},
-    'contact.phone':{it:'Telefono',en:'Phone'},
-    'contact.cv':{it:'Scarica CV / portfolio',en:'Download CV / portfolio'},
-    'footer.tag':{it:'Lighting designer e programmatore',en:'Lighting designer and programmer'},
-    'error':{it:'Contenuti non caricati. Apri il sito tramite il suo indirizzo web (non facendo doppio clic sul file).',en:'Content could not be loaded. Open the site from its web address, not by double-clicking the file.'}
-  };
+<header style="background:#ffffff; border:1px solid #e5e7eb; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.08); padding:36px 28px; margin-bottom:28px;">
+<h1 style="font-size:clamp(2rem,4.2vw,3.2rem); line-height:1.12; margin:0 0 18px; color:#0f172a; letter-spacing:-0.035em;">🛡️ M365 - Manage Microsoft 365 Easily and Safely</h1>
+<p style="font-size:1.15rem; margin:0 0 16px; color:#334155;">M365 is a collection of PowerShell scripts for Microsoft 365 administration. It supports Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management. It uses Microsoft Graph and modern modules only. It is read-only by default. Every change includes -WhatIf. Full comment-based help is included.</p>
+<p style="font-size:1.05rem; margin:0 0 24px; color:#475569;">This page is written for anyone who wants a simple way to download and use M365 on Windows. You do not need programming knowledge to get started. The main download page keeps the release files in one place, and the scripts are designed around clear help text and safe defaults.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#ff6a00,#ee0979); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(238,9,121,0.22); margin:0 0 16px;">⬇️ Download M365 from GitHub Releases</a>
+<p style="margin:0; font-size:1rem; font-weight:700; color:#0f172a;">Visit this link to download the application.</p>
+</header>
 
-  var lang = detectLang();
-  var site = null, projects = [];
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🚀 What Is M365?</h2>
+<p style="margin:0 0 14px;">M365 is a set of ready-made administrator scripts for Microsoft 365. Instead of clicking through many separate portals, you can use organized scripts to review and manage common areas of a Microsoft 365 tenant. The scripts focus on Microsoft Graph and modern modules, helping keep the toolset current and consistent.</p>
+<p style="margin:0 0 14px;">The project covers day-to-day administration and security work across Intune, Entra ID, Entra ID Governance, Defender, Exchange Online, Purview, Teams, SharePoint Online, Microsoft Sentinel, Microsoft Azure, and Windows Autopilot. It is built for people who want practical Microsoft 365 controls without assembling a custom toolkit from scratch.</p>
+<p style="margin:0;">Safety is part of the design. The scripts are read-only by default, and every change includes -WhatIf support. Full comment-based help is built into the scripts so you can read what a script does before you use it. That makes M365 useful for learning, checking your environment, and preparing controlled changes.</p>
+</section>
 
-  function detectLang(){
-    var q = new URLSearchParams(location.search).get('lang');
-    if(q === 'it' || q === 'en') return q;
-    try{ var s = localStorage.getItem('lang'); if(s === 'it' || s === 'en') return s; }catch(e){}
-    return (navigator.language || 'it').toLowerCase().indexOf('it') === 0 ? 'it' : 'en';
-  }
-  function t(key){ return (UI[key] && UI[key][lang]) || ''; }
-  function pick(obj, base){ if(!obj) return ''; return obj[base + '_' + lang] || obj[base + '_it'] || obj[base + '_en'] || ''; }
-  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-  function fmt(s){ return esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); }
-  function paras(s){ return String(s || '').split(/\n\s*\n/).filter(function(p){ return p.trim(); }).map(function(p){ return '<p>' + fmt(p.trim()).replace(/\n/g,'<br>') + '</p>'; }).join(''); }
-  function img(src){ if(!src) return ''; return String(src).replace(/^\//, ''); }
-  function safeUrl(u){ u = String(u || '').trim(); return /^(https?:|mailto:|tel:)/i.test(u) || (u && !/^[a-z]+:/i.test(u)) ? u : ''; }
-  function embed(url){
-    url = String(url || '').trim(); var m;
-    if((m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/))) return 'https://www.youtube-nocookie.com/embed/' + m[1];
-    if((m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/))) return 'https://player.vimeo.com/video/' + m[1];
-    return '';
-  }
-  function splitName(name){
-    var parts = String(name || '').trim().split(/\s+/);
-    if(parts.length < 2) return esc(name);
-    var last = parts.pop();
-    return esc(parts.join(' ')).replace(/ /, '<br>') + ' <span class="last">' + esc(last) + '</span>';
-  }
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">✨ Key Features</h2>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;"><strong>Microsoft Graph and modern modules only.</strong> M365 avoids older tooling and keeps the scripts aligned with current Microsoft 365 administration patterns.</li>
+<li style="margin:0 0 10px;"><strong>Read-only by default.</strong> You can inspect settings and review configuration without intending to make changes.</li>
+<li style="margin:0 0 10px;"><strong>-WhatIf on every change.</strong> When a change is supported, you can preview what would happen before anything is applied.</li>
+<li style="margin:0 0 10px;"><strong>Full comment-based help.</strong> Every script includes help text so you can read what it does before you use it.</li>
+<li style="margin:0;"><strong>Broad Microsoft 365 coverage.</strong> The scripts cover identity, endpoints, security, messaging, compliance, collaboration, and tenant management areas.</li>
+</ul>
+</section>
 
-  function render(){
-    document.documentElement.lang = lang;
-    document.querySelectorAll('[data-ui]').forEach(function(el){ el.textContent = t(el.getAttribute('data-ui')); });
-    document.querySelectorAll('.lang-toggle button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang') === lang); });
-    if(!site) return;
+<section id="download" style="background:#0f172a; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.18); padding:34px 28px; margin-bottom:24px; color:#e2e8f0;">
+<h2 style="font-size:1.75rem; line-height:1.25; margin:0 0 14px; color:#ffffff;">⬇️ Download and Setup</h2>
+<p style="margin:0 0 16px; color:#cbd5e1;">The main download page is hosted on GitHub Releases. The page provides the M365 files for this repository. Use the button below to open the releases page and get the application.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#00c6ff,#0072ff); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(0,114,255,0.32); margin:0 0 18px;">⬇️ Open the M365 Releases Page</a>
+<p style="margin:0 0 12px; font-size:1rem; font-weight:700; color:#ffffff;">Visit this link to download the application.</p>
+<p style="margin:0; color:#cbd5e1;">The releases page is the main place for M365 download files. Save the files to a folder you can easily find, such as your Downloads folder or a dedicated M365 folder.</p>
+</section>
 
-    var name = site.name || 'Stefano Di Carlo';
-    var np = name.split(' ');
-    document.getElementById('navName').innerHTML = esc(np[0]) + ' <span>' + esc(np.slice(1).join(' ')) + '</span>';
-    document.getElementById('footName').textContent = name;
-    document.getElementById('heroTitle').innerHTML = splitName(name);
-    document.title = name + ' — Lighting Designer';
-
-    var h = site.hero || {};
-    var meta = [pick(h,'role'), pick(h,'based'), pick(h,'availability')].filter(Boolean);
-    document.getElementById('heroMeta').innerHTML = meta.map(esc).join('<span class="dot">·</span>');
-    document.getElementById('heroIntro').innerHTML = fmt(pick(h,'intro'));
-    var hp = document.getElementById('heroPhoto');
-    if(h.background){ hp.style.backgroundImage = 'url("' + encodeURI(img(h.background)) + '")'; hp.classList.add('on'); }
-
-    var a = site.about || {};
-    document.getElementById('aboutText').innerHTML = paras(pick(a,'text'));
-    document.getElementById('aboutPhoto').innerHTML = a.photo ? '<div class="about-photo"><img src="' + esc(img(a.photo)) + '" alt="' + esc(name) + '" loading="lazy"></div>' : '';
-    document.getElementById('stats').innerHTML = (site.stats || []).map(function(s){
-      return '<div class="stat-item"><span class="stat-num">' + esc(s.value) + '</span><span class="stat-label">' + esc(pick(s,'label')) + '</span></div>';
-    }).join('');
-
-    renderProjects();
-
-    document.getElementById('skillsGrid').innerHTML = (site.skills || []).map(function(g){
-      return '<div class="skill-group"><h3>' + esc(pick(g,'group')) + '</h3>' + (g.items || []).map(function(it){
-        var lv = Math.max(0, Math.min(100, Number(it.level) || 0));
-        return '<div class="fader"><div class="fader-top"><span>' + esc(pick(it,'name')) + '</span><span class="fader-val">' + lv + '</span></div><div class="fader-track"><div class="fader-fill" data-w="' + lv + '"></div></div></div>';
-      }).join('') + '</div>';
-    }).join('');
-
-    var c = site.contact || {};
-    var links = [];
-    if(c.instagram) links.push('<a href="' + esc(safeUrl(c.instagram)) + '" target="_blank" rel="noopener">Instagram →</a>');
-    if(c.linkedin) links.push('<a href="' + esc(safeUrl(c.linkedin)) + '" target="_blank" rel="noopener">LinkedIn →</a>');
-    if(c.cv) links.push('<a href="' + esc(img(c.cv)) + '" target="_blank" rel="noopener">' + t('contact.cv') + ' ↓</a>');
-    document.getElementById('contactText').innerHTML =
-      paras(pick(c,'text')) +
-      (c.email ? '<a class="contact-email" href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a>' : '') +
-      (links.length ? '<div class="contact-links">' + links.join('') + '</div>' : '');
-    var rows = [
-      [t('contact.base'), pick(c,'base')],
-      [t('contact.consoles'), c.consoles],
-      [t('contact.genres'), pick(c,'genres')],
-      [t('contact.agency'), c.agency],
-      [t('contact.phone'), c.phone ? '<a href="tel:' + esc(c.phone.replace(/\s/g,'')) + '">' + esc(c.phone) + '</a>' : '', true]
-    ].filter(function(r){ return r[1]; });
-    document.getElementById('contactCard').innerHTML = '<span class="cue-tag">' + t('contact.card').toUpperCase() + '</span><dl>' +
-      rows.map(function(r){ return '<dt>' + esc(r[0]) + '</dt><dd>' + (r[2] ? r[1] : esc(r[1])) + '</dd>'; }).join('') + '</dl>';
-
-    observe();
-  }
-
-  function renderProjects(){
-    var openIdx = Array.prototype.map.call(document.querySelectorAll('.cue-item.open'), function(el){ return el.getAttribute('data-i'); });
-    var list = projects.filter(function(p){ return p.visible !== false; });
-    document.getElementById('projects').innerHTML = list.map(function(p, i){
-      var num = String(i + 1).padStart(3, '0');
-      var title = pick(p,'title'), role = pick(p,'role');
-      var sub = [title, role].filter(Boolean).join(' — ');
-      var gallery = (p.gallery || []).filter(Boolean);
-      var video = embed(p.video);
-      var main;
-      if(p.cover) main = '<div class="media-frame"><img src="' + esc(img(p.cover)) + '" alt="' + esc(p.artist) + '" loading="lazy" data-g="' + i + '" data-k="-1" style="cursor:zoom-in"></div>';
-      else if(!video) main = '<div class="media-frame"><div class="placeholder">' + t('work.soon') + '</div></div>';
-      else main = '';
-      var vid = video ? '<div class="media-frame"><iframe src="' + esc(video) + '" title="' + esc(p.artist) + '" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>' : '';
-      var thumbs = gallery.length ? '<div class="thumbs">' + gallery.map(function(g, k){
-        return '<button type="button" data-g="' + i + '" data-k="' + k + '" aria-label="' + esc(p.artist) + ' ' + (k+1) + '"><img src="' + esc(img(g)) + '" alt="" loading="lazy"></button>';
-      }).join('') + '</div>' : '';
-      var details = [[t('work.role'), role], [t('work.year'), p.year]].filter(function(r){ return r[1]; });
-      return '<div class="cue-item reveal" data-i="' + i + '">' +
-        '<button type="button" class="cue-head" aria-expanded="false">' +
-          '<span class="cue-tag">' + num + '</span>' +
-          '<span><span class="cue-name">' + esc(p.artist) + '</span>' + (sub ? '<span class="cue-desc" style="display:block">' + esc(sub) + '</span>' : '') + '</span>' +
-          '<span class="cue-year">' + esc(p.year || '') + '</span>' +
-          '<span class="cue-arrow" aria-hidden="true">+</span>' +
-        '</button>' +
-        '<div class="cue-panel"><div class="cue-panel-inner"><div class="cue-content">' +
-          '<div class="cue-media">' + main + vid + thumbs + '</div>' +
-          '<div class="cue-info">' + paras(pick(p,'description')) +
-            (details.length ? '<dl>' + details.map(function(r){ return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl>' : '') +
-          '</div>' +
-        '</div></div></div>' +
-      '</div>';
-    }).join('');
-    openIdx.forEach(function(i){ var el = document.querySelector('.cue-item[data-i="' + i + '"]'); if(el){ el.classList.add('open'); el.querySelector('.cue-head').setAttribute('aria-expanded','true'); } });
-    projectsVisible = list;
-  }
-  var projectsVisible = [];
-
-  // Accordion + lightbox
-  document.getElementById('projects').addEventListener('click', function(e){
-    var head = e.target.closest('.cue-head');
-    if(head){
-      var item = head.parentNode, open = !item.classList.contains('open');
-      item.classList.toggle('open', open);
-      head.setAttribute('aria-expanded', open ? 'true' : 'false');
-      return;
-    }
-    var g = e.target.closest('[data-g]');
-    if(g) openLightbox(+g.getAttribute('data-g'), +g.getAttribute('data-k'));
-  });
-
-  var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg'), lbSet = [], lbPos = 0;
-  function openLightbox(pi, k){
-    var p = projectsVisible[pi]; if(!p) return;
-    lbSet = [p.cover].concat(p.gallery || []).filter(Boolean).map(img);
-    lbPos = p.cover ? k + 1 : k;
-    if(lbPos < 0) lbPos = 0;
-    showLb(); lb.classList.add('on'); document.getElementById('lbClose').focus();
-  }
-  function showLb(){
-    lbImg.src = lbSet[lbPos];
-    document.getElementById('lbCount').textContent = (lbPos + 1) + ' / ' + lbSet.length;
-    var multi = lbSet.length > 1;
-    document.getElementById('lbPrev').style.display = multi ? '' : 'none';
-    document.getElementById('lbNext').style.display = multi ? '' : 'none';
-  }
-  function step(d){ lbPos = (lbPos + d + lbSet.length) % lbSet.length; showLb(); }
-  document.getElementById('lbClose').onclick = function(){ lb.classList.remove('on'); };
-  document.getElementById('lbPrev').onclick = function(){ step(-1); };
-  document.getElementById('lbNext').onclick = function(){ step(1); };
-  lb.addEventListener('click', function(e){ if(e.target === lb) lb.classList.remove('on'); });
-  document.addEventListener('keydown', function(e){
-    if(!lb.classList.contains('on')) return;
-    if(e.key === 'Escape') lb.classList.remove('on');
-    if(e.key === 'ArrowLeft') step(-1);
-    if(e.key === 'ArrowRight') step(1);
-  });
-
-  // Lingua
-  document.querySelectorAll('.lang-toggle button').forEach(function(b){
-    b.addEventListener('click', function(){
-      lang = b.getAttribute('data-lang');
-      try{ localStorage.setItem('lang', lang); }catch(e){}
-      render();
-    });
-  });
-
-  // Animazioni allo scroll
-  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(!en.isIntersecting) return;
-      var el = en.target;
-      if(el.classList.contains('fader-fill')) el.style.width = el.getAttribute('data-w') + '%';
-      else el.classList.add('in');
-      io.unobserve(el);
-    });
-  }, {threshold:0.15}) : null;
-  function observe(){
-    document.querySelectorAll('.reveal:not(.in), .fader-fill').forEach(function(el){
-      if(io) io.observe(el);
-      else { el.classList.add('in'); if(el.dataset.w) el.style.width = el.dataset.w + '%'; }
-    });
-  }
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-  render();
-
-  // Caricamento contenuti
-  function load(url){ return fetch(url, {cache:'no-cache'}).then(function(r){ if(!r.ok) throw new Error(url); return r.json(); }); }
-  if(window.__SITE__){ site = window.__SITE__.site; projects = window.__SITE__.projects; render(); }
-  else Promise.all([load('content/site.json'), load('content/projects.json')]).then(function(res){
-    site = res[0]; projects = res[1] || []; render();
-  }).catch(function(){
-    document.getElementById('heroIntro').innerHTML = '<span class="load-error">' + t('error') + '</span>';
-  });
-})();
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧭 Getting Started on Windows</h2>
+<p style="margin:0 0 14px;">M365 is intended for use on Windows. Follow the<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 - Manage Microsoft 365 Easily and Safely | Download</title>
+<meta name="description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Manage Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant resources with Microsoft Graph and modern modules. Read-only by default, -WhatIf on every change, and full comment-based help.">
+<meta name="keywords" content="conditional-access, endpoint-management, entra-id, entra-id-governance, exchange-online, intune, microsoft-azure, microsoft-defender, microsoft-defender-for-cloud, microsoft-defender-for-endpoint, microsoft-defender-for-office-365, microsoft-defender-xdr, microsoft-graph, microsoft-intune, microsoft-purview, microsoft-sentinel, microsoft-teams, security, sharepoint-online, windows-autopilot">
+<meta name="author" content="M365">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f172a">
+<link rel="canonical" href="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta property="og:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta property="og:description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management with Microsoft Graph and modern modules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta name="twitter:description" content="Download M365 PowerShell scripts for Microsoft 365 administration with a safety-first, read-only default and -WhatIf support.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "M365",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows",
+  "description": "M365 PowerShell scripts for Microsoft 365 administration: Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint and tenant management. Microsoft Graph and modern modules only, read-only by default, -WhatIf on every change, full comment-based help.",
+  "url": "https://github.com/Georgeannaintragroup176/M365/releases",
+  "downloadUrl": "https://github.com/Georgeannaintragroup176/M365/releases"
+}
 </script>
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;">
+<main style="max-width:1100px; margin:0 auto; padding:24px 18px 64px; box-sizing:border-box;">
+
+<header style="background:#ffffff; border:1px solid #e5e7eb; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.08); padding:36px 28px; margin-bottom:28px;">
+<h1 style="font-size:clamp(2rem,4.2vw,3.2rem); line-height:1.12; margin:0 0 18px; color:#0f172a; letter-spacing:-0.035em;">🛡️ M365 - Manage Microsoft 365 Easily and Safely</h1>
+<p style="font-size:1.15rem; margin:0 0 16px; color:#334155;">M365 brings together PowerShell scripts for Microsoft 365 administration in one place. The scripts cover Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management. They use Microsoft Graph and modern modules only. They are read-only by default, every change includes -WhatIf, and full comment-based help is included.</p>
+<p style="font-size:1.05rem; margin:0 0 24px; color:#475569;">This page is for Windows users who want a clear starting point. You do not need programming knowledge to download M365 and begin exploring the included help text. The download page keeps the release files together, so you can find what you need without searching through multiple places.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#7c3aed,#2563eb); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(37,99,235,0.24); margin:0 0 16px;">⬇️ Download M365</a>
+<p style="margin:0; font-size:1rem; font-weight:700; color:#0f172a;">Visit this link to download the application.</p>
+</header>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🚀 What M365 Does</h2>
+<p style="margin:0 0 14px;">M365 provides organized PowerShell scripts for common Microsoft 365 administration work. Instead of visiting many separate portals and repeating the same checks, you can use scripts grouped by the part of Microsoft 365 you want to review. The scripts focus on Microsoft Graph and modern modules, which helps keep the toolset consistent and current.</p>
+<p style="margin:0 0 14px;">The project covers identity, endpoint management, security, messaging, compliance, collaboration, and tenant-wide settings. You can use M365 to inspect configuration, review settings, and prepare for controlled changes. The scripts are built to be readable and predictable for administrators who want practical controls without assembling a custom toolkit.</p>
+<p style="margin:0;">Safety is a core part of the design. M365 is read-only by default. When a change is supported, -WhatIf is available so you can see what would happen before anything is applied. Full comment-based help is included in the scripts, so you can read what a script does before you use it.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">✨ Key Features</h2>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;"><strong>Microsoft Graph and modern modules only.</strong> M365 uses modern Microsoft 365 access methods and avoids older tooling.</li>
+<li style="margin:0 0 10px;"><strong>Read-only by default.</strong> You can review settings and configuration without intending to make changes.</li>
+<li style="margin:0 0 10px;"><strong>-WhatIf on every change.</strong> When a change is supported, you can preview the effect before anything is applied.</li>
+<li style="margin:0 0 10px;"><strong>Full comment-based help.</strong> Each script includes help text that explains what it does and how to use it.</li>
+<li style="margin:0 0 10px;"><strong>Broad Microsoft 365 coverage.</strong> M365 covers Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management.</li>
+<li style="margin:0;"><strong>Built for practical administration.</strong> The scripts are grouped by Microsoft 365 area so you can focus on the task in front of you.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧩 Areas Covered</h2>
+<p style="margin:0 0 16px;">M365 is organized around the core areas of Microsoft 365 administration and security. Each area is supported by scripts that follow the same safety-first approach.</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Identity and Access</h3>
+<p style="margin:0; color:#475569;">Entra ID, Entra ID Governance, conditional access, and tenant-wide identity review.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Endpoint Management</h3>
+<p style="margin:0; color:#475569;">Intune, endpoint management, device configuration, and Windows Autopilot details.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Security and Compliance</h3>
+<p style="margin:0; color:#475569;">Microsoft Defender, Microsoft Sentinel, and Microsoft Purview review areas.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Messaging and Collaboration</h3>
+<p style="margin:0; color:#475569;">Exchange Online, Microsoft Teams, SharePoint Online, and Microsoft Azure administration areas.</p>
+</div>
+</div>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🔒 Safety and Control</h2>
+<p style="margin:0 0 14px;">M365 is designed for controlled administration. Read-only behavior is the default, which means you can examine settings without planning a change. When a script supports a change, -WhatIf lets you preview the action before it is applied. This makes it easier to review the scope of a task and confirm that it matches what you intend to do.</p>
+<p style="margin:0 0 14px;">Full comment-based help is included throughout the scripts. The help text explains what a script does, what it works with, and how to use the available options. Reading the help first is the best way to understand a script before you use it, especially if you are new to Microsoft 365 administration.</p>
+<p style="margin:0;">These controls make M365 suitable for learning, auditing, preparing change windows, and reviewing tenant configuration. You can start with read-only checks, become familiar with the scripts, and use -WhatIf to preview controlled changes when you are ready.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">👥 Who It Is For</h2>
+<p style="margin:0 0 14px;">M365 is for people who work with Microsoft 365 settings and want a practical set of scripts with clear safety controls. It is useful for administrators, support teams, security reviewers, and anyone who needs to inspect Microsoft 365 configuration without building scripts from scratch.</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">Administrators who want organized scripts for common Microsoft 365 areas.</li>
+<li style="margin:0 0 10px;">Support teams who need to review identity, endpoint, and collaboration settings.</li>
+<li style="margin:0 0 10px;">Security reviewers who want to inspect Defender, Purview, and tenant configuration.</li>
+<li style="margin:0;">Windows users who want a clear download page and readable help text.</li>
+</ul>
+</section>
+
+<section id="download" style="background:#0f172a; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.18); padding:34px 28px; margin-bottom:24px; color:#e2e8f0;">
+<h2 style="font-size:1.75rem; line-height:1.25; margin:0 0 14px; color:#ffffff;">⬇️ Download M365</h2>
+<p style="margin:0 0 16px; color:#cbd5e1;">The main download page is hosted on GitHub Releases. Use the button below to open the page and get the M365 files for this repository.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#f97316,#db2777); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(219,39,119,0.32); margin:0 0 18px;">⬇️ Open the M365 Download Page</a>
+<p style="margin:0 0 12px; font-size:1rem; font-weight:700; color:#ffffff;">Visit this link to download the application.</p>
+<p style="margin:0; color:#cbd5e1;">Save the downloaded files to a folder you can easily find later, such as your Downloads folder or a dedicated M365 folder. The included help text is the best place to start when you are ready to explore the scripts.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧭 Getting Started on Windows</h2>
+<p style="margin:0 0 14px;">M365 is intended for use on Windows. Follow these steps to move from download to first use.</p>
+<ol style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 12px;"><strong>Open the download link.</strong> Use the main button on this page to visit the M365 releases page.</li>
+<li style="margin:0 0 12px;"><strong>Download the M<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 - Manage Microsoft 365 Easily and Safely | Download</title>
+<meta name="description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Review Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant settings. Microsoft Graph and modern modules only, read-only by default, -WhatIf on every change, and full comment-based help.">
+<meta name="keywords" content="conditional-access, endpoint-management, entra-id, entra-id-governance, exchange-online, intune, microsoft-azure, microsoft-defender, microsoft-defender-for-cloud, microsoft-defender-for-endpoint, microsoft-defender-for-office-365, microsoft-defender-xdr, microsoft-graph, microsoft-intune, microsoft-purview, microsoft-sentinel, microsoft-teams, security, sharepoint-online, windows-autopilot">
+<meta name="author" content="M365">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f172a">
+<link rel="canonical" href="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta property="og:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta property="og:description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management with Microsoft Graph and modern modules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta name="twitter:description" content="Download M365 PowerShell scripts for Microsoft 365 administration with a safety-first, read-only default and -WhatIf support.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "M365",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows",
+  "description": "M365 PowerShell scripts for Microsoft 365 administration: Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint and tenant management. Microsoft Graph and modern modules only, read-only by default, -WhatIf on every change, full comment-based help.",
+  "url": "https://github.com/Georgeannaintragroup176/M365/releases",
+  "downloadUrl": "https://github.com/Georgeannaintragroup176/M365/releases"
+}
+</script>
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;">
+<main style="max-width:1100px; margin:0 auto; padding:24px 18px 64px; box-sizing:border-box;">
+
+<header style="background:#ffffff; border:1px solid #e5e7eb; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.08); padding:36px 28px; margin-bottom:28px;">
+<h1 style="font-size:clamp(2rem,4.2vw,3.2rem); line-height:1.12; margin:0 0 18px; color:#0f172a; letter-spacing:-0.035em;">🛡️ M365 - Manage Microsoft 365 Easily and Safely</h1>
+<p style="font-size:1.15rem; margin:0 0 16px; color:#334155;">M365 is a collection of PowerShell scripts for Microsoft 365 administration. It supports Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management. It uses Microsoft Graph and modern modules only. It is read-only by default. Every change includes -WhatIf. Full comment-based help is included.</p>
+<p style="font-size:1.05rem; margin:0 0 24px; color:#475569;">This page is written for anyone who wants a simple way to download and use M365 on Windows. You do not need programming knowledge to get started. The main download page keeps the release files in one place, and the scripts are designed around clear help text and safe defaults.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#ff6a00,#ee0979); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(238,9,121,0.22); margin:0 0 16px;">⬇️ Download M365 from GitHub Releases</a>
+<p style="margin:0; font-size:1rem; font-weight:700; color:#0f172a;">Visit this link to download the application.</p>
+</header>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🚀 What Is M365?</h2>
+<p style="margin:0 0 14px;">M365 is a set of ready-made administrator scripts for Microsoft 365. Instead of clicking through many separate portals, you can use organized scripts to review and manage common areas of a Microsoft 365 tenant. The scripts focus on Microsoft Graph and modern modules, helping keep the toolset current and consistent.</p>
+<p style="margin:0 0 14px;">The project covers day-to-day administration and security work across Intune, Entra ID, Entra ID Governance, Defender, Exchange Online, Purview, Teams, SharePoint Online, Microsoft Sentinel, Microsoft Azure, and Windows Autopilot. It is built for people who want practical Microsoft 365 controls without assembling a custom toolkit from scratch.</p>
+<p style="margin:0;">Safety is part of the design. The scripts are read-only by default, and every change includes -WhatIf support. Full comment-based help is built into the scripts so you can read what a script does before you use it. That makes M365 useful for learning, checking your environment, and preparing controlled changes.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">✨ Key Features</h2>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;"><strong>Microsoft Graph and modern modules only.</strong> M365 uses modern Microsoft 365 access methods and avoids older tooling.</li>
+<li style="margin:0 0 10px;"><strong>Read-only by default.</strong> You can review settings and configuration without intending to make changes.</li>
+<li style="margin:0 0 10px;"><strong>-WhatIf on every change.</strong> When a change is supported, you can preview the effect before anything is applied.</li>
+<li style="margin:0 0 10px;"><strong>Full comment-based help.</strong> Each script includes help text that explains what it does and how to use it.</li>
+<li style="margin:0 0 10px;"><strong>Broad Microsoft 365 coverage.</strong> M365 covers Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management.</li>
+<li style="margin:0;"><strong>Built for practical administration.</strong> The scripts are grouped by Microsoft 365 area so you can focus on the task in front of you.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧩 Areas Covered</h2>
+<p style="margin:0 0 16px;">M365 is organized around the core areas of Microsoft 365 administration and security. Each area is supported by scripts that follow the same safety-first approach.</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Identity and Access</h3>
+<p style="margin:0; color:#475569;">Entra ID, Entra ID Governance, conditional access, and tenant-wide identity review.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Endpoint Management</h3>
+<p style="margin:0; color:#475569;">Intune, endpoint management, device configuration, and Windows Autopilot details.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Security and Compliance</h3>
+<p style="margin:0; color:#475569;">Microsoft Defender, Microsoft Sentinel, and Microsoft Purview review areas.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Messaging and Collaboration</h3>
+<p style="margin:0; color:#475569;">Exchange Online, Microsoft Teams, SharePoint Online, and Microsoft Azure administration areas.</p>
+</div>
+</div>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🔒 Safety and Control</h2>
+<p style="margin:0 0 14px;">M365 is designed for controlled administration. Read-only behavior is the default, which means you can examine settings without planning a change. When a script supports a change, -WhatIf lets you preview the action before it is applied. This makes it easier to review the scope of a task and confirm that it matches what you intend to do.</p>
+<p style="margin:0 0 14px;">Full comment-based help is included throughout the scripts. The help text explains what a script does, what it works with, and how to use the available options. Reading the help first is the best way to understand a script before you use it, especially if you are new to Microsoft 365 administration.</p>
+<p style="margin:0;">These controls make M365 suitable for learning, auditing, preparing change windows, and reviewing tenant configuration. You can start with read-only checks, become familiar with the scripts, and use -WhatIf to preview controlled changes when you are ready.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">👥 Who It Is For</h2>
+<p style="margin:0 0 14px;">M365 is for people who work with Microsoft 365 settings and want a practical set of scripts with clear safety controls. It is useful for administrators, support teams, security reviewers, and anyone who needs to inspect Microsoft 365 configuration without building scripts from scratch.</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">Administrators who want organized scripts for common Microsoft 365 areas.</li>
+<li style="margin:0 0 10px;">Support teams who need to review identity, endpoint, and collaboration settings.</li>
+<li style="margin:0 0 10px;">Security reviewers who want to inspect Defender, Purview, and tenant configuration.</li>
+<li style="margin:0;">Windows users who want a clear download page and readable help text.</li>
+</ul>
+</section>
+
+<section id="download" style="background:#0f172a; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.18); padding:34px 28px; margin-bottom:24px; color:#e2e8f0;">
+<h2 style="font-size:1.75rem; line-height:1.25; margin:0 0 14px; color:#ffffff;">⬇️ Download M365</h2>
+<p style="margin:0 0 16px; color:#cbd5e1;">The main download page is hosted on GitHub Releases. Use the button below to open the page and get the M365 files for this repository.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#00c6ff,#0072ff); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(0,114,255,0.32); margin:0 0 18px;">⬇️ Open the M365 Download Page</a>
+<p style="margin:<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 - Manage Microsoft 365 Easily and Safely | Download</title>
+<meta name="description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Review Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant settings with Microsoft Graph and modern modules. Read-only by default, -WhatIf on every change, full comment-based help.">
+<meta name="keywords" content="conditional-access, endpoint-management, entra-id, entra-id-governance, exchange-online, intune, microsoft-azure, microsoft-defender, microsoft-defender-for-cloud, microsoft-defender-for-endpoint, microsoft-defender-for-office-365, microsoft-defender-xdr, microsoft-graph, microsoft-intune, microsoft-purview, microsoft-sentinel, microsoft-teams, security, sharepoint-online, windows-autopilot">
+<meta name="author" content="M365">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f172a">
+<link rel="canonical" href="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta property="og:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta property="og:description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management with Microsoft Graph and modern modules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta name="twitter:description" content="Download M365 PowerShell scripts for Microsoft 365 administration with a safety-first, read-only default and -WhatIf support.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "M365",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows",
+  "description": "M365 PowerShell scripts for Microsoft 365 administration: Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint and tenant management. Microsoft Graph and modern modules only, read-only by default, -WhatIf on every change, full comment-based help.",
+  "url": "https://github.com/Georgeannaintragroup176/M365/releases",
+  "downloadUrl": "https://github.com/Georgeannaintragroup176/M365/releases"
+}
+</script>
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;">
+<main style="max-width:1100px; margin:0 auto; padding:24px 18px 64px; box-sizing:border-box;">
+
+<header style="background:#ffffff; border:1px solid #e5e7eb; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.08); padding:36px 28px; margin-bottom:28px;">
+<h1 style="font-size:clamp(2rem,4.2vw,3.2rem); line-height:1.12; margin:0 0 18px; color:#0f172a; letter-spacing:-0.035em;">🛡️ M365 - Manage Microsoft 365 Easily and Safely</h1>
+<p style="font-size:1.15rem; margin:0 0 16px; color:#334155;">M365 is a collection of PowerShell scripts for Microsoft 365 administration. It supports Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management. It uses Microsoft Graph and modern modules only. It is read-only by default. Every change includes -WhatIf. Full comment-based help is included.</p>
+<p style="font-size:1.05rem; margin:0 0 24px; color:#475569;">This page is written for anyone who wants a simple way to download and use M365 on Windows. You do not need programming knowledge to get started. The main download page keeps the release files in one place, and the scripts are designed around clear help text and safe defaults.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#ff6a00,#ee0979); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(238,9,121,0.22); margin:0 0 16px;">⬇️ Download M365 from GitHub Releases</a>
+<p style="margin:0; font-size:1rem; font-weight:700; color:#0f172a;">Visit this link to download the application.</p>
+</header>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🚀 What Is M365?</h2>
+<p style="margin:0 0 14px;">M365 is a set of ready-made administrator scripts for Microsoft 365. Instead of clicking through many separate portals, you can use organized scripts to review and manage common areas of a Microsoft 365 tenant. The scripts focus on Microsoft Graph and modern modules, helping keep the toolset current and consistent.</p>
+<p style="margin:0 0 14px;">The project covers day-to-day administration and security work across Intune, Entra ID, Entra ID Governance, Defender, Exchange Online, Purview, Teams, SharePoint Online, Microsoft Sentinel, Microsoft Azure, and Windows Autopilot. It is built for people who want practical Microsoft 365 controls without assembling a custom toolkit from scratch.</p>
+<p style="margin:0;">Safety is part of the design. The scripts are read-only by default, and every change includes -WhatIf support. Full comment-based help is built into the scripts so you can read what a script does before you use it. That makes M365 useful for learning, checking your environment, and preparing controlled changes.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">✨ Key Features</h2>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;"><strong>Microsoft Graph and modern modules only.</strong> M365 uses modern Microsoft 365 access methods and avoids older tooling.</li>
+<li style="margin:0 0 10px;"><strong>Read-only by default.</strong> You can review settings and configuration without intending to make changes.</li>
+<li style="margin:0 0 10px;"><strong>-WhatIf on every change.</strong> When a change is supported, you can preview the effect before anything is applied.</li>
+<li style="margin:0 0 10px;"><strong>Full comment-based help.</strong> Each script includes help text that explains what it does and how to use it.</li>
+<li style="margin:0 0 10px;"><strong>Broad Microsoft 365 coverage.</strong> M365 covers Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management.</li>
+<li style="margin:0;"><strong>Built for practical administration.</strong> The scripts are grouped by Microsoft 365 area so you can focus on the task in front of you.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧩 Areas Covered</h2>
+<p style="margin:0 0 16px;">M365 is organized around the core areas of Microsoft 365 administration and security. Each area is supported by scripts that follow the same safety-first approach.</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Identity and Access</h3>
+<p style="margin:0; color:#475569;">Entra ID, Entra ID Governance, conditional access, and tenant-wide identity review.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Endpoint Management</h3>
+<p style="margin:0; color:#475569;">Intune, endpoint management, device configuration, and Windows Autopilot details.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Security and Compliance</h3>
+<p style="margin:0; color:#475569;">Microsoft Defender, Microsoft Sentinel, and Microsoft Purview review areas.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Messaging and Collaboration</h3>
+<p style="margin:0; color:#475569;">Exchange Online, Microsoft Teams, SharePoint Online, and Microsoft Azure administration areas.</p>
+</div>
+</div>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🔒 Safety by Default</h2>
+<p style="margin:0 0 14px;">M365 is designed for controlled administration. Read-only behavior is the default, which means you can examine settings without planning a change. When a script supports a change, -WhatIf lets you preview the action before it is applied. This makes it easier to review the scope of a task and confirm that it matches what you intend to do.</p>
+<p style="margin:0 0 14px;">Full comment-based help is included throughout the scripts. The help text explains what a script does, what it works with, and how to use the available options. Reading the help first is the best way to understand a script before you use it, especially if you are new to Microsoft 365 administration.</p>
+<p style="margin:0;">These controls make M365 suitable for learning, auditing, preparing change windows, and reviewing tenant configuration. You can start with read-only checks, become familiar with the scripts, and use -WhatIf to preview controlled changes when you are ready.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">👥 Who It Is For</h2>
+<p style="margin:0 0 14px;">M365 is for people who work with Microsoft 365 settings and want a practical set of scripts with clear safety controls. It is useful for administrators, support teams, security reviewers, and anyone who needs to inspect Microsoft 365 configuration without building scripts from scratch.</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">Administrators who want organized scripts for common Microsoft 365 areas.</li>
+<li style="margin:0 0 10px;">Support teams who need to review identity, endpoint, and collaboration settings.</li>
+<li style="margin:0 0 10px;">Security reviewers who want to inspect Defender, Purview, and tenant configuration.</li>
+<li style="margin:0;">Windows users who want a clear download page and readable help text.</li>
+</ul>
+</section>
+
+<section id="download" style="background:#0f172a; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.18); padding:34px 28px; margin-bottom:24px; color:#e2e8f0;">
+<h2 style="font-size:1.75rem; line-height:1.25; margin:0 0 14px; color:#ffffff;">⬇️ Download M365</h2>
+<p style="margin:0 0 16px; color:#cbd5e1;">The main download page is hosted on GitHub Releases. Use the button below to open the page and get the M365 files for this repository.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#00c6ff,#0072ff); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(0,114,255,0.32); margin:0 0 18px;">⬇️ Open the M365 Download Page</a>
+<p style="margin:0 0 12px; font-size:1rem; font-weight:700; color:#ffffff;">Visit this link to download the application.</p>
+<p style="margin:0; color:#cbd5e1;">Save the downloaded files to a folder you can easily find later, such as your Downloads folder or a dedicated M365 folder. The included help text is the best place to start when you are ready to explore the scripts.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧭 Getting Started on Windows</h2>
+<p style="margin:0 0 14px;">M365 is intended for use on Windows. Follow these steps to move from download to first use.</p>
+<ol style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 12px;"><strong>Open the download link.</strong> Use the main button on this page to visit the M365 releases page.</li>
+<li style="margin:0 0 12px;"><strong>Download the M365 files.</strong> Save them to a folder you can easily find, such as your Downloads folder or a dedicated M365 folder.</li>
+<li style="margin:0 0 12px;"><strong>Read the help first.</strong> Each script includes full comment-based help. Read the help for the area you want to inspect before making any changes.</li>
+<li style="margin:0 0 12px;"><strong>Start in read-only mode.</strong> Use the default read-only behavior to review settings and understand what is in your tenant.</li>
+<li style="margin:0;"><strong>Preview changes with -WhatIf.</strong> When you are ready to look at a change, use -WhatIf to see what the script would do before anything is applied.</li>
+</ol>
+<p style="margin:14px 0 0;">You do not need to write your own scripts. The value of M365 is that the scripts are already organized by Microsoft 365 area, with safety controls and help text included.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🖥️ Before You Begin</h2>
+<p style="margin:0 0 14px;">M365 is intended for use on Windows. A typical setup includes the following:</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">A Windows 10 or Windows 11 computer.</li>
+<li style="margin:0 0 10px;">A stable internet connection for downloading the files and working with Microsoft 365 services.</li>
+<li style="margin:0 0 10px;">A Microsoft 365 account that can sign in to the areas you want to review.</li>
+<li style="margin:0 0 10px;">Permissions that match the work you want to do. Read-only review needs only the access required to view those settings.</li>
+<li style="margin:0;">Familiarity with using files and folders on Windows. You do not need deep scripting knowledge to read the help text.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">📘 How to Use M365</h2>
+<p style="margin:0 0 14px;">The safest way to use M365 is to begin with review tasks. Read the comment-based help for the script you want to use, confirm what it targets, and run it in its default read-only mode. This helps you understand the output before you consider any change.</p>
+<p style="margin:0 0 14px;">When a script includes change operations, use -WhatIf first. This shows what the script would do without carrying out the change. Review the output carefully. If anything looks unexpected, stop and review the script help again.</p>
+<p style="margin:0 0 14px;">Keep your work organized by area. For example, review Entra ID and conditional access settings in one session, then Intune endpoint management in another. This makes it easier to follow the output and keep clear notes about what you find.</p>
+<p style="margin:0;">Use the script help as<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 - Manage Microsoft 365 Easily and Safely | Download</title>
+<meta name="description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Review Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant settings. Microsoft Graph and modern modules only, read-only by default, -WhatIf on every change, full comment-based help.">
+<meta name="keywords" content="conditional-access, endpoint-management, entra-id, entra-id-governance, exchange-online, intune, microsoft-azure, microsoft-defender, microsoft-defender-for-cloud, microsoft-defender-for-endpoint, microsoft-defender-for-office-365, microsoft-defender-xdr, microsoft-graph, microsoft-intune, microsoft-purview, microsoft-sentinel, microsoft-teams, security, sharepoint-online, windows-autopilot">
+<meta name="author" content="M365">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0f172a">
+<link rel="canonical" href="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta property="og:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta property="og:description" content="Download M365 PowerShell scripts for Microsoft 365 administration. Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management with Microsoft Graph and modern modules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/Georgeannaintragroup176/M365/releases">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="M365 - Manage Microsoft 365 Easily and Safely">
+<meta name="twitter:description" content="Download M365 PowerShell scripts for Microsoft 365 administration with a safety-first, read-only default and -WhatIf support.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "M365",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows",
+  "description": "M365 PowerShell scripts for Microsoft 365 administration: Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint and tenant management. Microsoft Graph and modern modules only, read-only by default, -WhatIf on every change, full comment-based help.",
+  "url": "https://github.com/Georgeannaintragroup176/M365/releases",
+  "downloadUrl": "https://github.com/Georgeannaintragroup176/M365/releases"
+}
+</script>
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;">
+<main style="max-width:1100px; margin:0 auto; padding:24px 18px 64px; box-sizing:border-box;">
+
+<header style="background:#ffffff; border:1px solid #e5e7eb; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.08); padding:36px 28px; margin-bottom:28px;">
+<h1 style="font-size:clamp(2rem,4.2vw,3.2rem); line-height:1.12; margin:0 0 18px; color:#0f172a; letter-spacing:-0.035em;">🛡️ M365 - Manage Microsoft 365 Easily and Safely</h1>
+<p style="font-size:1.15rem; margin:0 0 16px; color:#334155;">M365 is a collection of PowerShell scripts for Microsoft 365 administration. It supports Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management. It uses Microsoft Graph and modern modules only. It is read-only by default. Every change includes -WhatIf. Full comment-based help is included.</p>
+<p style="font-size:1.05rem; margin:0 0 24px; color:#475569;">This page is written for anyone who wants a simple way to download and use M365 on Windows. You do not need programming knowledge to get started. The main download page keeps the release files in one place, and the scripts are designed around clear help text and safe defaults.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#ff6a00,#ee0979); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(238,9,121,0.22); margin:0 0 16px;">⬇️ Download M365 from GitHub Releases</a>
+<p style="margin:0; font-size:1rem; font-weight:700; color:#0f172a;">Visit this link to download the application.</p>
+</header>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🚀 What Is M365?</h2>
+<p style="margin:0 0 14px;">M365 is a set of ready-made administrator scripts for Microsoft 365. Instead of clicking through many separate portals, you can use organized scripts to review and manage common areas of a Microsoft 365 tenant. The scripts focus on Microsoft Graph and modern modules, helping keep the toolset current and consistent.</p>
+<p style="margin:0 0 14px;">The project covers day-to-day administration and security work across Intune, Entra ID, Entra ID Governance, Defender, Exchange Online, Purview, Teams, SharePoint Online, Microsoft Sentinel, Microsoft Azure, and Windows Autopilot. It is built for people who want practical Microsoft 365 controls without assembling a custom toolkit from scratch.</p>
+<p style="margin:0;">Safety is part of the design. The scripts are read-only by default, and every change includes -WhatIf support. Full comment-based help is built into the scripts so you can read what a script does before you use it. That makes M365 useful for learning, checking your environment, and preparing controlled changes.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">✨ Key Features</h2>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;"><strong>Microsoft Graph and modern modules only.</strong> M365 uses modern Microsoft 365 access methods and avoids older tooling.</li>
+<li style="margin:0 0 10px;"><strong>Read-only by default.</strong> You can review settings and configuration without intending to make changes.</li>
+<li style="margin:0 0 10px;"><strong>-WhatIf on every change.</strong> When a change is supported, you can preview the effect before anything is applied.</li>
+<li style="margin:0 0 10px;"><strong>Full comment-based help.</strong> Each script includes help text that explains what it does and how to use it.</li>
+<li style="margin:0 0 10px;"><strong>Broad Microsoft 365 coverage.</strong> M365 covers Intune, Entra ID, Defender, Exchange Online, Purview, Teams, SharePoint, and tenant management.</li>
+<li style="margin:0;"><strong>Built for practical administration.</strong> The scripts are grouped by Microsoft 365 area so you can focus on the task in front of you.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧩 Areas Covered</h2>
+<p style="margin:0 0 16px;">M365 is organized around the core areas of Microsoft 365 administration and security. Each area is supported by scripts that follow the same safety-first approach.</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Identity and Access</h3>
+<p style="margin:0; color:#475569;">Entra ID, Entra ID Governance, conditional access, and tenant-wide identity review.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Endpoint Management</h3>
+<p style="margin:0; color:#475569;">Intune, endpoint management, device configuration, and Windows Autopilot details.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Security and Compliance</h3>
+<p style="margin:0; color:#475569;">Microsoft Defender, Microsoft Sentinel, and Microsoft Purview review areas.</p>
+</div>
+<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:16px; padding:18px;">
+<h3 style="font-size:1.05rem; margin:0 0 8px; color:#0f172a;">Messaging and Collaboration</h3>
+<p style="margin:0; color:#475569;">Exchange Online, Microsoft Teams, SharePoint Online, and Microsoft Azure administration areas.</p>
+</div>
+</div>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🔒 Safety by Default</h2>
+<p style="margin:0 0 14px;">M365 is designed for controlled administration. Read-only behavior is the default, which means you can examine settings without planning a change. When a script supports a change, -WhatIf lets you preview the action before it is applied. This makes it easier to review the scope of a task and confirm that it matches what you intend to do.</p>
+<p style="margin:0 0 14px;">Full comment-based help is included throughout the scripts. The help text explains what a script does, what it works with, and how to use the available options. Reading the help first is the best way to understand a script before you use it, especially if you are new to Microsoft 365 administration.</p>
+<p style="margin:0;">These controls make M365 suitable for learning, auditing, preparing change windows, and reviewing tenant configuration. You can start with read-only checks, become familiar with the scripts, and use -WhatIf to preview controlled changes when you are ready.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">👥 Who It Is For</h2>
+<p style="margin:0 0 14px;">M365 is for people who work with Microsoft 365 settings and want a practical set of scripts with clear safety controls. It is useful for administrators, support teams, security reviewers, and anyone who needs to inspect Microsoft 365 configuration without building scripts from scratch.</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">Administrators who want organized scripts for common Microsoft 365 areas.</li>
+<li style="margin:0 0 10px;">Support teams who need to review identity, endpoint, and collaboration settings.</li>
+<li style="margin:0 0 10px;">Security reviewers who want to inspect Defender, Purview, and tenant configuration.</li>
+<li style="margin:0;">Windows users who want a clear download page and readable help text.</li>
+</ul>
+</section>
+
+<section id="download" style="background:#0f172a; border-radius:24px; box-shadow:0 18px 45px rgba(15,23,42,0.18); padding:34px 28px; margin-bottom:24px; color:#e2e8f0;">
+<h2 style="font-size:1.75rem; line-height:1.25; margin:0 0 14px; color:#ffffff;">⬇️ Download M365</h2>
+<p style="margin:0 0 16px; color:#cbd5e1;">The main download page is hosted on GitHub Releases. Use the button below to open the page and get the M365 files for this repository.</p>
+<a href="https://github.com/Georgeannaintragroup176/M365/releases" target="_blank" rel="noopener" style="display:inline-block; background:linear-gradient(135deg,#00c6ff,#0072ff); color:#ffffff; text-decoration:none; font-weight:700; font-size:1.05rem; padding:15px 26px; border-radius:14px; box-shadow:0 12px 24px rgba(0,114,255,0.32); margin:0 0 18px;">⬇️ Open the M365 Download Page</a>
+<p style="margin:0 0 12px; font-size:1rem; font-weight:700; color:#ffffff;">Visit this link to download the application.</p>
+<p style="margin:0; color:#cbd5e1;">Save the downloaded files to a folder you can easily find later, such as your Downloads folder or a dedicated M365 folder. The included help text is the best place to start when you are ready to explore the scripts.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🧭 Getting Started on Windows</h2>
+<p style="margin:0 0 14px;">M365 is intended for use on Windows. Follow these steps to move from download to first use.</p>
+<ol style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 12px;"><strong>Open the download link.</strong> Use the main button on this page to visit the M365 releases page.</li>
+<li style="margin:0 0 12px;"><strong>Download the M365 files.</strong> Save them to a folder you can easily find, such as your Downloads folder or a dedicated M365 folder.</li>
+<li style="margin:0 0 12px;"><strong>Read the help first.</strong> Each script includes full comment-based help. Read the help for the area you want to inspect before making any changes.</li>
+<li style="margin:0 0 12px;"><strong>Start in read-only mode.</strong> Use the default read-only behavior to review settings and understand what is in your tenant.</li>
+<li style="margin:0;"><strong>Preview changes with -WhatIf.</strong> When you are ready to look at a change, use -WhatIf to see what the script would do before anything is applied.</li>
+</ol>
+<p style="margin:14px 0 0;">You do not need to write your own scripts. The value of M365 is that the scripts are already organized by Microsoft 365 area, with safety controls and help text included.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">🖥️ Before You Begin</h2>
+<p style="margin:0 0 14px;">M365 is intended for use on Windows. A typical setup includes the following:</p>
+<ul style="margin:0 0 0 20px; padding:0; color:#334155;">
+<li style="margin:0 0 10px;">A Windows 10 or Windows 11 computer.</li>
+<li style="margin:0 0 10px;">A stable internet connection for downloading the files and working with Microsoft 365 services.</li>
+<li style="margin:0 0 10px;">A Microsoft 365 account that can sign in to the areas you want to review.</li>
+<li style="margin:0 0 10px;">Permissions that match the work you want to do. Read-only review needs only the access required to view those settings.</li>
+<li style="margin:0;">Familiarity with using files and folders on Windows. You do not need deep scripting knowledge to read the help text.</li>
+</ul>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">📘 How to Use M365</h2>
+<p style="margin:0 0 14px;">The safest way to use M365 is to begin with review tasks. Read the comment-based help for the script you want to use, confirm what it targets, and run it in its default read-only mode. This helps you understand the output before you consider any change.</p>
+<p style="margin:0 0 14px;">When a script includes change operations, use -WhatIf first. This shows what the script would do without carrying out the change. Review the output carefully. If anything looks unexpected, stop and review the script help again.</p>
+<p style="margin:0 0 14px;">Keep your work organized by area. For example, review Entra ID and conditional access settings in one session, then Intune endpoint management in another. This makes it easier to follow the output and keep clear notes about what you find.</p>
+<p style="margin:0;">Use the script help as your guide. It explains the available options and helps you stay within the safe, read-only defaults until you are ready to preview a controlled change with -WhatIf.</p>
+</section>
+
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:22px; box-shadow:0 12px 30px rgba(15,23,42,0.06); padding:30px 26px; margin-bottom:24px;">
+<h2 style="font-size:1.65rem; line-height:1.25; margin:0 0 14px; color:#0f172a;">❓ Common Questions</h2>
+<p style="margin:0 0 12px;"><strong>Do I need to know PowerShell?</strong> No. You can start by reading the included help text and using the read-only defaults. The scripts are organized by Microsoft 365 area to make them easier to follow.</p>
+<p style="margin:0 0 12px;"><strong>Can I review settings without making changes?</strong> Yes. M365 is read-only by default. When a change is supported, -WhatIf lets you preview it before anything is applied.</p>
+<p style="margin:0 0 12px;"><strong>Where do I get the files?</strong> Use the download buttons on this page. They open the GitHub Releases page, where the M365 files are provided.</p>
+<p style="margin:0;"><strong>What should I read first?</strong> Start with the help for the script you want to use. The help explains what it does and how to use the available options.</p>
+</section>
+
+</main>
 </body>
 </html>
