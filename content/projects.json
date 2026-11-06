@@ -5,12 +5,6 @@
     "title_en": "European tour",
     "role_it": "Disegno luci e programmazione",
     "role_en": "Lighting design and programming",
-    "year": "",
-    "description_it": "",
-    "description_en": "",
-    "cover": "",
-    "gallery": [],
-    "video": "",
     "visible": true
   },
   {
@@ -19,12 +13,7 @@
     "title_en": "European tour",
     "role_it": "Disegno luci e programmazione",
     "role_en": "Lighting design and programming",
-    "year": "",
-    "description_it": "",
-    "description_en": "",
     "cover": "images/LC_GMM.jpg",
-    "gallery": [],
-    "video": "",
     "visible": true
   },
   {
@@ -33,12 +22,7 @@
     "title_en": "European tour",
     "role_it": "Disegno luci e programmazione",
     "role_en": "Lighting design and programming",
-    "year": "",
-    "description_it": "",
-    "description_en": "",
-    "cover": "",
-    "gallery": [],
-    "video": "",
+    "cover": "images/tpt_2019.jpeg",
     "visible": true
   },
   {
@@ -47,12 +31,6 @@
     "title_en": "European tour",
     "role_it": "Disegno luci e programmazione",
     "role_en": "Lighting design and programming",
-    "year": "",
-    "description_it": "",
-    "description_en": "",
-    "cover": "",
-    "gallery": [],
-    "video": "",
     "visible": true
   }
 ]
