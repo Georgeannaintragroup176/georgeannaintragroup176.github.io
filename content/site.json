@@ -87,6 +87,16 @@
           "name_it": "Programmazione in tour",
           "name_en": "On-tour programming",
           "level": 93
+        },
+        {
+          "name_it": "Unreal Engine 5 - Blender",
+          "name_en": "Unreal Engine 5 - Blender",
+          "level": 90
+        },
+        {
+          "name_it": "DaVinci Resolve Studio",
+          "name_en": "DaVinci Resolve Studio",
+          "level": 85
         }
       ]
     }
